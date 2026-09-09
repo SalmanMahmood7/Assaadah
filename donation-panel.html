@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Panel - Assaada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .donation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .donation-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .video-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .video-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: #cd871f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 25px solid white;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            margin-left: 5px;
+        }
+
+        .progress-section {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .raised {
+            color: #cd871f;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .goal {
+            color: #666;
+        }
+
+        .progress-bar-background {
+            position: relative;
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #cd871f 0%, #b87a1c 100%);
+            height: 100%;
+            border-radius: 15px;
+            transition: width 1.5s ease;
+            min-width: 53.7449%;
+        }
+
+        .percent {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .donation-form-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .donation-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .donation-tabs label {
+            flex: 1;
+            padding: 12px 20px;
+            background: #f0f0f0;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .donation-tabs label.active {
+            background: #cd871f;
+            color: white;
+            border-color: #cd871f;
+        }
+
+        .donation-tabs input[type="radio"] {
+            display: none;
+        }
+
+        .box-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-select-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .custom-option-button {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .custom-option-button:hover {
+            border-color: #cd871f;
+            background: #fef5e7;
+        }
+
+        .custom-option-button.selected {
+            background: #cd871f;
+            color: white;
+            border-color: #cd871f;
+        }
+
+        .custom-amount-box {
+            margin-bottom: 25px;
+        }
+
+        .currency-input {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .currency-input input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            font-size: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        .currency-input input:focus {
+            outline: none;
+            border-color: #cd871f;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+        }
+
+        .after {
+            position: absolute;
+            right: 20px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .quantity .btn {
+            width: 40px;
+            height: 40px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 8px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .quantity .btn:hover {
+            background: #cd871f;
+            color: white;
+        }
+
+        .quantity input {
+            width: 80px;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .single_add_to_cart_button {
+            width: 100%;
+            padding: 18px;
+            background: #cd871f;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .single_add_to_cart_button:hover {
+            background: #b87a1c;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(205, 135, 31, 0.3);
+        }
+
+        .info-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #fef5e7;
+            border-left: 4px solid #cd871f;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+
+        .info-icon {
+            color: #cd871f;
+            font-size: 24px;
+        }
+
+        .info-text {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .monthly-fields {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .donation-wrapper {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .form-select-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .progress-section.desktop-only {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .progress-section.mobile-only {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="donation-container">
+        <div class="donation-wrapper">
+            <div class="video-section">
+                <div class="video-container">
+                    <iframe 
+                        src="https://www.youtube.com/embed/WHNNLbJ1yNA?feature=oembed&loop=0&mute=0&controls=1" 
+                        allowfullscreen 
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        loading="lazy">
+                    </iframe>
+                    <div class="video-overlay" onclick="this.classList.add('hidden')">
+                        <div class="play-button"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-section desktop-only">
+                    <div class="progress-info">
+                        <div>
+                            <span class="raised">£268,725</span> 
+                            <span>of <span class="goal">£500,000</span> goal</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar-background">
+                        <div class="progress-bar"></div>
+                        <span class="percent">54%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="donation-form-section">
+                <div class="progress-section mobile-only">
+                    <div class="progress-info">
+                        <div>
+                            <span class="raised">£268,725</span> 
+                            <span>of <span class="goal">£500,000</span> goal</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar-background">
+                        <div class="progress-bar"></div>
+                        <span class="percent">54%</span>
+                    </div>
+                </div>
+
+                <form class="donation-form" method="post" action="/donate/">
+                    <div class="donation-tabs">
+                        <label class="active">
+                            <input type="radio" name="donation_option" value="Once" checked>
+                            Once
+                        </label>
+                        <label>
+                            <input type="radio" name="donation_option" value="Monthly">
+                            ❤️ Monthly
+                        </label>
+                    </div>
+
+                    <div class="box-title">Your most generous donation</div>
+
+                    <div class="once-fields form-select-buttons">
+                        <button type="button" class="custom-option-button" data-price="1000">
+                            <span class="price">£1000</span>
+                        </button>
+                        <button type="button" class="custom-option-button" data-price="500">
+                            <span class="price">£500</span>
+                        </button>
+                        <button type="button" class="custom-option-button" data-price="300">
+                            <span class="price">£300</span>
+                        </button>
+                        <button type="button" class="custom-option-button" data-price="120">
+                            <span class="price">£120</span>
+                        </button>
+                        <button type="button" class="custom-option-button selected" data-price="55">
+                            <span class="price">£55</span>
+                        </button>
+                        <button type="button" class="custom-option-button" data-price="25">
+                            <span class="price">£25</span>
+                        </button>
+                    </div>
+
+                    <div class="monthly-fields form-select-buttons">
+                        <button type="button" class="custom-option-button" data-price="300">
+                            <span class="price">£300</span>
+                        </button>
+                        <button type="button" class="custom-option-button" data-price="130">
+                            <span class="price">£130</span>
+                        </button>
+                        <button type="button" class="custom-option-button" data-price="60">
+                            <span class="price">£60</span>
+                        </button>
+                        <button type="button" class="custom-option-button" data-price="35">
+                            <span class="price">£35</span>
+                        </button>
+                        <button type="button" class="custom-option-button selected" data-price="10">
+                            <span class="price">£10</span>
+                        </button>
+                        <button type="button" class="custom-option-button" data-price="5">
+                            <span class="price">£5</span>
+                        </button>
+                    </div>
+
+                    <div class="custom-amount-box">
+                        <div class="currency-input">
+                            <input type="number" name="selected_amount" placeholder="0.00" value="55" step="0.01" min="1">
+                            <span class="currency-symbol">£</span>
+                            <span class="after">Custom Amount</span>
+                        </div>
+                    </div>
+
+                    <div class="quantity">
+                        <input type="button" value="-" class="minus btn">
+                        <input type="number" value="1" min="1" name="quantity">
+                        <input type="button" value="+" class="plus btn">
+                    </div>
+
+                    <button type="submit" class="single_add_to_cart_button">
+                        Donate and Support
+                    </button>
+                </form>
+
+                <div class="info-box">
+                    <div class="info-icon">ℹ️</div>
+                    <div class="info-text">This Project is Zakat Applicable</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle donation tab switching
+        const donationTabs = document.querySelectorAll('.donation-tabs label');
+        const onceFields = document.querySelector('.once-fields');
+        const monthlyFields = document.querySelector('.monthly-fields');
+
+        donationTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                donationTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                if (this.querySelector('input').value === 'Monthly') {
+                    onceFields.style.display = 'none';
+                    monthlyFields.style.display = 'grid';
+                } else {
+                    onceFields.style.display = 'grid';
+                    monthlyFields.style.display = 'none';
+                }
+            });
+        });
+
+        // Handle amount selection
+        const amountButtons = document.querySelectorAll('.custom-option-button');
+        const amountInput = document.querySelector('input[name="selected_amount"]');
+
+        amountButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const parentGrid = this.closest('.form-select-buttons');
+                parentGrid.querySelectorAll('.custom-option-button').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                amountInput.value = this.dataset.price;
+            });
+        });
+
+        // Handle quantity buttons
+        const minusBtn = document.querySelector('.minus');
+        const plusBtn = document.querySelector('.plus');
+        const quantityInput = document.querySelector('input[name="quantity"]');
+
+        minusBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+
+        plusBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            quantityInput.value = value + 1;
+        });
+
+        // Animate progress bar on load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const progressBar = document.querySelector('.progress-bar');
+                progressBar.style.width = '53.7449%';
+            }, 500);
+        });
+    </script>
+</body>
+</html>
