@@ -37,7 +37,7 @@ export default function BootcampComingSoon() {
         <div className="content">
           <h1>Coming Soon...</h1>
           <Link href="/courses" className="back-link">
-            ← Back to Courses
+            Back to Courses
           </Link>
         </div>
 

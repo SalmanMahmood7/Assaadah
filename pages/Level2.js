@@ -274,10 +274,10 @@ export default function LevelTwoPage() {
             <p>See how Level 2 fits into the complete As-Sa&apos;adah pathway.</p>
             <div className="cta-actions">
               <Link href="/admission-terms?level=level2" className="cta-button">
-                Apply Now →
+                Apply Now
               </Link>
               <Link href="/courses" className="cta-button-secondary">
-                ← Back to Courses
+                Back to Courses
               </Link>
             </div>
           </div>

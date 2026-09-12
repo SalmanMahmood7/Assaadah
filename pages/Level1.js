@@ -500,10 +500,10 @@ export default function LevelOnePage() {
               rel="noopener noreferrer"
               className="cta-button"
             >
-              Apply Now →
+              Apply Now
             </a>
             <Link href="/courses" className="cta-button-secondary">
-              ← Back to Courses
+              Back to Courses
             </Link>
           </div>
         </div>

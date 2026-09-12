@@ -86,22 +86,27 @@ export default function ApplyNowSection() {
         </div>
 
         {/* Right: CTA card */}
-        <div className="cta-card">
+        <div className="cta-card-stack">
 
-          <div className="cta-card-glow" aria-hidden="true" />
+          <div className="cta-card-backdrop" aria-hidden="true" />
 
-          <span className="cta-card-badge">3-Step Funnel</span>
+          <div className="cta-card">
 
-          <h3 className="cta-heading">Ready to begin your journey?</h3>
+            <div className="cta-card-glow" aria-hidden="true" />
 
-          <p className="footer-note">
-            After submission, you will receive automatic email confirmation and LMS access.
-          </p>
+            <span className="cta-card-badge">3-Step Funnel</span>
 
-          <button type="button" className="apply-button" onClick={() => setIsApplyGateOpen(true)}>
-            Start Application
-            <span className="apply-button-arrow">→</span>
-          </button>
+            <h3 className="cta-heading">Ready to begin your journey?</h3>
+
+            <p className="footer-note">
+              After submission, you will receive automatic email confirmation and LMS access.
+            </p>
+
+            <button type="button" className="apply-button" onClick={() => setIsApplyGateOpen(true)}>
+              Start Application
+            </button>
+
+          </div>
 
         </div>
 
@@ -233,8 +238,24 @@ export default function ApplyNowSection() {
         }
 
         /* CTA Card */
+        .cta-card-stack {
+          position: relative;
+        }
+
+        .cta-card-backdrop {
+          position: absolute;
+          top: 18px;
+          left: 18px;
+          right: -18px;
+          bottom: -18px;
+          background: #dcf5e3;
+          border-radius: 24px;
+          z-index: 0;
+        }
+
         .cta-card {
           position: relative;
+          z-index: 1;
           background: linear-gradient(160deg, #1a472a, #14532d 55%, #0b2b18);
           border-radius: 24px;
           padding: 48px 38px;

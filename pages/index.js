@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import About from "../components/About";
 import Education from "../components/Education";
 import ProblemSection from "../components/ProblemSection";
+import CoursesSection from "../components/CoursesSection";
 import StructureSection from "../components/StructureSection";
 import LearnSection from "../components/LearnSection";
 import FeeStructure from "../components/FeeStructure";
@@ -45,6 +46,9 @@ export default function Home() {
 
         {/* Section 2 - The Problem */}
         <ProblemSection />
+
+        {/* Section 2.5 - Our Courses */}
+        <CoursesSection />
 
         {/* Section 3 - The Structure */}
         <StructureSection />

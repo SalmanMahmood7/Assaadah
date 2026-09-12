@@ -63,6 +63,7 @@ export default function Programs() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [heroImages, setHeroImages] = useState(FALLBACK_HERO_IMAGES);
   const [instructors, setInstructors] = useState(FALLBACK_INSTRUCTORS);
+  const [activeInstructor, setActiveInstructor] = useState(0);
 
   const router = useRouter();
 
@@ -302,7 +303,7 @@ export default function Programs() {
                 <p>
                   A 2-month, fully online foundation phase open to absolute beginners. Students build logical thinking, Python programming basics, debugging, and responsible AI use &mdash; developing the discipline and digital literacy needed before advancing further.
                 </p>
-                <Link href="/Level1">Learn More About Level 1 &rarr;</Link>
+                <Link href="/Level1">Learn More About Level 1</Link>
               </article>
 
               <article className="level-intro-card">
@@ -311,7 +312,7 @@ export default function Programs() {
                 <p>
                   Candidates who complete Level 1 with the required consistency advance into an immersive, fully-funded physical bootcamp across seven specialization tracks &mdash; including AI, Web & App Development, Cloud & DevOps, and UI/UX &mdash; under expert mentorship.
                 </p>
-                <Link href="/Level2">Learn More About Level 2 &rarr;</Link>
+                <Link href="/Level2">Learn More About Level 2</Link>
               </article>
             </div>
           </section>
@@ -326,28 +327,52 @@ export default function Programs() {
                 </p>
               </div>
 
-              <div className="instructors-grid">
-                {instructors.map((instructor, index) => (
-                  <div data-aos="fade-up" data-aos-delay={Math.min(index * 80, 400)} className="instructor-card" key={instructor.name}>
-                    <span className="instructor-index">{String(index + 1).padStart(2, "0")}</span>
-                    <div className="instructor-image-container">
+              <div className="team-tabs">
+                <div className="team-menu">
+                  {instructors.map((instructor, index) => (
+                    <button
+                      type="button"
+                      key={instructor.name}
+                      className={`team-menu-item ${activeInstructor === index ? "active" : ""}`}
+                      onClick={() => setActiveInstructor(index)}
+                    >
                       <img
                         src={instructor.image}
                         alt={instructor.name}
-                        className="instructor-image"
                         onError={(e) => {
                           e.target.src = AVATAR_PLACEHOLDER;
                         }}
                       />
+                      <h4>{instructor.name}</h4>
+                      <span>{instructor.subject}</span>
+                    </button>
+                  ))}
+                </div>
+
+                {instructors.map((instructor, index) => (
+                  index === activeInstructor && (
+                    <div className="team-detail" key={instructor.name}>
+                      <div className="team-detail-content">
+                        <h4>{instructor.name}</h4>
+                        <p className="team-detail-role">{instructor.subject}</p>
+                        {instructor.bio && <p>{instructor.bio}</p>}
+                        <div className="team-detail-cta">
+                          <Link href="/contact" className="contact-member-btn">
+                            Contact Member
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="team-detail-image">
+                        <img
+                          src={instructor.image}
+                          alt={instructor.name}
+                          onError={(e) => {
+                            e.target.src = AVATAR_PLACEHOLDER;
+                          }}
+                        />
+                      </div>
                     </div>
-                    <div className="instructor-details">
-                      <h3 className="instructor-name">{instructor.name}</h3>
-                      <p className="instructor-role">{instructor.subject}</p>
-                      {instructor.bio && (
-                        <p className="instructor-bio">{instructor.bio}</p>
-                      )}
-                    </div>
-                  </div>
+                  )
                 ))}
               </div>
             </div>
@@ -1017,27 +1042,82 @@ export default function Programs() {
             line-height: 1.7;
           }
 
-          .instructors-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: clamp(1.5rem, 3vw, 3rem);
+          .team-tabs {
+            max-width: 1000px;
+            margin: 0 auto;
           }
 
-          .instructor-card {
+          .team-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+          }
+
+          .team-menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: transparent;
+            border: none;
+            padding: 1rem 0.75rem;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+          }
+
+          .team-menu-item:hover {
+            background: #f0fdf4;
+          }
+
+          .team-menu-item img {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.75rem;
+            border: 3px solid transparent;
+            transition: border-color 0.3s ease;
+          }
+
+          .team-menu-item.active img {
+            border-color: #2f855a;
+          }
+
+          .team-menu-item h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1a472a;
+            margin: 0 0 0.25rem;
+            font-family: 'Montserrat', sans-serif;
+          }
+
+          .team-menu-item span {
+            font-size: 0.75rem;
+            color: #718096;
+            line-height: 1.4;
+          }
+
+          .team-menu-item.active span {
+            color: #2f855a;
+            font-weight: 600;
+          }
+
+          .team-detail {
             position: relative;
             display: flex;
             align-items: center;
-            gap: clamp(1.25rem, 2.5vw, 2.25rem);
+            gap: 2.5rem;
             background: linear-gradient(160deg, rgba(255, 255, 255, 0.98), rgba(240, 253, 244, 0.95));
             border-radius: 24px;
-            padding: clamp(1.75rem, 3vw, 2.75rem);
+            padding: 2.5rem;
             box-shadow: 0 15px 40px rgba(26, 71, 42, 0.1);
             border: 1px solid rgba(26, 71, 42, 0.08);
-            transition: all 0.3s ease;
             overflow: hidden;
           }
 
-          .instructor-card::before {
+          .team-detail::before {
             content: '';
             position: absolute;
             top: 0;
@@ -1047,85 +1127,70 @@ export default function Programs() {
             background: linear-gradient(180deg, #68d391, #2f855a, #1a472a);
           }
 
-          .instructor-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 50px rgba(26, 71, 42, 0.18);
-          }
-
-          .instructor-index {
-            position: absolute;
-            top: 1rem;
-            right: 1.25rem;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: rgba(26, 71, 42, 0.15);
-            letter-spacing: 1px;
-          }
-
-          .instructor-image-container {
-            flex-shrink: 0;
-            width: clamp(110px, 11vw, 160px);
-            height: clamp(110px, 11vw, 160px);
-            border-radius: 50%;
-            overflow: hidden;
-            padding: 4px;
-            background: linear-gradient(135deg, #68d391, #1a472a);
-            box-shadow: 0 10px 25px rgba(26, 71, 42, 0.3);
-          }
-
-          .instructor-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            border-radius: 50%;
-            border: 3px solid #ffffff;
-          }
-
-          .instructor-details {
+          .team-detail-content {
             flex: 1;
             min-width: 0;
             text-align: left;
           }
 
-          .instructor-name {
-            font-size: clamp(1.15rem, 1.6vw, 1.5rem);
+          .team-detail-content h4 {
+            font-size: 1.6rem;
             font-weight: 800;
             color: #1a472a;
-            margin: 0 0 0.4rem;
+            margin: 0 0 0.5rem;
             font-family: 'Montserrat', sans-serif;
           }
 
-          .instructor-role {
-            font-size: clamp(0.9rem, 1.1vw, 1.05rem);
-            color: #4a5568;
+          .team-detail-role {
+            font-size: 1rem;
+            color: #2f855a;
             font-weight: 600;
-            margin: 0 0 0.6rem;
-            line-height: 1.45;
+            margin: 0 0 0.9rem;
           }
 
-          .instructor-bio {
-            font-size: 0.9rem;
-            color: #718096;
-            line-height: 1.55;
+          .team-detail-content p {
+            font-size: 0.95rem;
+            color: #4a5568;
+            line-height: 1.65;
             margin: 0;
           }
 
-          .instructor-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+          .team-detail-cta {
+            margin-top: 1.5rem;
           }
 
-          .instructor-tag {
-            background: #f0fdf4;
-            color: #2f855a;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.3rem 0.7rem;
+          :global(.contact-member-btn) {
+            display: inline-block;
+            background: linear-gradient(135deg, #1a472a, #2f855a);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.75rem 1.75rem;
+            border-radius: 30px;
+            text-decoration: none;
+            box-shadow: 0 10px 22px rgba(26, 71, 42, 0.28);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+
+          :global(.contact-member-btn:hover) {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(26, 71, 42, 0.35);
+          }
+
+          .team-detail-image {
+            flex-shrink: 0;
+            width: 200px;
+            height: 200px;
             border-radius: 20px;
-            border: 1px solid rgba(47, 133, 90, 0.25);
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(26, 71, 42, 0.25);
+          }
+
+          .team-detail-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
           }
 
           @media (max-width: 768px) {
@@ -1200,24 +1265,24 @@ export default function Programs() {
               font-size: 2rem;
             }
 
-            .instructors-grid {
-              grid-template-columns: 1fr;
-              gap: 1rem;
+            .team-menu {
+              grid-template-columns: repeat(2, 1fr);
             }
 
-            .instructor-card {
-              padding: 1.25rem;
-              gap: 1rem;
+            .team-detail {
+              flex-direction: column-reverse;
+              padding: 1.5rem;
+              gap: 1.5rem;
+              text-align: center;
             }
 
-            .instructor-index {
-              top: 0.75rem;
-              right: 0.85rem;
+            .team-detail-content {
+              text-align: center;
             }
 
-            .instructor-image-container {
-              width: 80px;
-              height: 80px;
+            .team-detail-image {
+              width: 160px;
+              height: 160px;
             }
 
             .batch-header-left h2 {

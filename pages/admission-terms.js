@@ -526,7 +526,7 @@ export default function AdmissionTerms() {
                 disabled={!accepted}
                 onClick={handleContinue}
               >
-                Continue to Application →
+                Continue to Application
               </button>
               {comingSoon && (
                 <p className="coming-soon-note">

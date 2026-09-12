@@ -157,7 +157,6 @@ export default function Contact() {
                     </div>
                     <button type="submit" className="submit-btn">
                       Send Message
-                      <span className="submit-btn-arrow">→</span>
                     </button>
                   </form>
                 </div>

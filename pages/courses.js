@@ -142,7 +142,6 @@ export default function CoursesPage() {
                 </div>
                 <Link href={course.path} className="start-btn">
                   Start Learning
-                  <span className="start-btn-arrow">→</span>
                 </Link>
               </article>
             ))}

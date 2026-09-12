@@ -9,6 +9,7 @@ const SECTIONS = [
   { key: "levelRules", label: "Level Rules" },
   { key: "instructors", label: "Instructors" },
   { key: "courses", label: "Courses" },
+  { key: "homepageCourses", label: "Homepage Courses" },
   { key: "videos", label: "Videos" },
   { key: "studentIds", label: "Student IDs" },
   { key: "applicationFields", label: "Application Form Fields" },
@@ -46,6 +47,25 @@ const courseFields = [
   { key: "level", label: "Level", type: "select", options: ["Level 1", "Level 2", "Level 3"], required: true },
   { key: "title", label: "Course Title", type: "text", required: true },
   { key: "focus", label: "Core Focus", type: "textarea" },
+];
+
+const homepageCourseFields = [
+  { key: "title", label: "Course Title", type: "text", required: true },
+  { key: "image", label: "Course Image", type: "image", required: true },
+  { key: "org", label: "Instructor", type: "text", required: true },
+  { key: "info", label: "Outcome Tag", type: "text", required: true },
+  {
+    key: "path",
+    label: "Course Detail Page",
+    type: "select",
+    required: true,
+    options: [
+      "/courses/ui-ux-design-figma",
+      "/courses/python-vscode-github",
+      "/courses/executive-english-language",
+      "/courses/digital-marketing-freelancing",
+    ],
+  },
 ];
 
 const videoFields = [
@@ -439,6 +459,19 @@ export default function AdminPanel() {
             fields={courseFields}
             itemLabelKey="title"
             tableName="courses"
+            orderBy="display_order"
+          />
+        );
+      case "homepageCourses":
+        return (
+          <CrudManager
+            key={activeSection}
+            title="Homepage Courses"
+            description="Manage the 4 courses shown in the 'Our Courses' carousel on the homepage — image, instructor, outcome tag, and which course page it links to."
+            fields={homepageCourseFields}
+            itemLabelKey="title"
+            tableName="homepage_courses"
+            imageBucket="homepage-course-images"
             orderBy="display_order"
           />
         );

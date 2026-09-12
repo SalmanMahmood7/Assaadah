@@ -258,10 +258,10 @@ export default function LevelThreePage() {
           <p>Explore the full program structure and see where Level 3 leads.</p>
           <div className="cta-actions">
             <Link href="/admission-terms?level=level3" className="cta-button">
-              Apply Now →
+              Apply Now
             </Link>
             <Link href="/courses" className="cta-button-secondary">
-              ← Back to Courses
+              Back to Courses
             </Link>
           </div>
         </div>

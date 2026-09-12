@@ -26,16 +26,16 @@ export default function EligibilitySection() {
         This program is designed for individuals prepared to commit to a structured path of capability development.
       </p>
 
-      <div className="cards">
+      <div className="split">
 
         {/* Should Apply */}
-        <div className="card positive">
-          <div className="card-badge check-badge" aria-hidden="true">✓</div>
-          <h3 className="card-title">Who Should Apply</h3>
+        <div className="split-side go">
+          <p className="split-label">Go</p>
+          <h3>Who Should Apply</h3>
           <ul>
             {shouldApply.map((item, i) => (
               <li data-aos="fade-up" data-aos-delay={Math.min(i * 80, 400)} key={i}>
-                <span className="icon check">✓</span>
+                <span className="marker">✓</span>
                 {item}
               </li>
             ))}
@@ -43,18 +43,20 @@ export default function EligibilitySection() {
         </div>
 
         {/* Should Not Apply */}
-        <div className="card negative">
-          <div className="card-badge cross-badge" aria-hidden="true">✕</div>
-          <h3 className="card-title">Who Should Not Apply</h3>
+        <div className="split-side stop">
+          <p className="split-label">Stop</p>
+          <h3>Who Should Not Apply</h3>
           <ul>
             {shouldNotApply.map((item, i) => (
               <li data-aos="fade-up" data-aos-delay={Math.min(i * 80, 400)} key={i}>
-                <span className="icon cross">✕</span>
+                <span className="marker">✕</span>
                 {item}
               </li>
             ))}
           </ul>
         </div>
+
+        <div className="vs-badge" aria-hidden="true">Are you<br />a fit?</div>
 
       </div>
 
@@ -62,7 +64,6 @@ export default function EligibilitySection() {
       <div className="see-more">
         <Link href="/admission-terms" className="see-more-card">
           <span className="see-more-title">See Full Admission Terms</span>
-          <span className="see-more-arrow">&rarr;</span>
         </Link>
       </div>
 
@@ -99,114 +100,97 @@ export default function EligibilitySection() {
           margin-right: auto;
         }
 
-        .cards {
-          display: flex;
-          justify-content: center;
-          gap: 40px;
-          flex-wrap: wrap;
-        }
-
-        .card {
+        .split {
           position: relative;
-          width: 420px;
-          padding: 40px 35px 35px;
-          border-radius: 18px;
-          text-align: left;
-          background: white;
-          box-shadow: 0 15px 40px rgba(26, 71, 42, 0.08);
-          border: 1px solid rgba(26, 71, 42, 0.08);
-          transition: all 0.3s ease;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          max-width: 1000px;
+          margin: 0 auto;
+          border-radius: 24px;
           overflow: hidden;
+          box-shadow: 0 25px 60px rgba(26, 71, 42, 0.15);
+          text-align: left;
         }
 
-        .card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 5px;
+        .split-side {
+          padding: 3.5rem 3rem;
         }
 
-        .positive::before {
-          background: linear-gradient(90deg, #68d391, #2f855a);
+        .split-side.go {
+          background: linear-gradient(160deg, #1a472a, #2f855a);
+          color: #ffffff;
         }
 
-        .negative::before {
-          background: linear-gradient(90deg, #fc8181, #c53030);
+        .split-side.stop {
+          background: #1a1a1a;
+          color: #f7f7f7;
         }
 
-        .card:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 22px 50px rgba(26, 71, 42, 0.14);
+        .split-label {
+          font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          opacity: 0.65;
+          margin-bottom: 1rem;
         }
 
-        .card-badge {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 22px;
-          font-weight: 800;
-          margin-bottom: 18px;
-        }
-
-        .check-badge {
-          background: #f0fff4;
-          color: #2f855a;
-          border: 2px solid rgba(47, 133, 90, 0.3);
-        }
-
-        .cross-badge {
-          background: #fff5f5;
-          color: #c53030;
-          border: 2px solid rgba(197, 48, 48, 0.3);
-        }
-
-        .card-title {
-          font-size: 22px;
-          margin-bottom: 20px;
+        .split-side h3 {
+          font-size: 1.5rem;
+          margin: 0 0 1.75rem;
           font-weight: 700;
-          color: #1a472a;
         }
 
-        ul {
+        .split-side ul {
           list-style: none;
           padding: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 1.1rem;
         }
 
-        li {
+        .split-side li {
           display: flex;
+          gap: 0.8rem;
           align-items: flex-start;
-          gap: 12px;
-          margin-bottom: 16px;
-          color: #2d3748;
-          line-height: 1.5;
+          line-height: 1.55;
         }
 
-        .icon {
+        .marker {
           flex-shrink: 0;
-          width: 22px;
-          height: 22px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 50%;
-          font-weight: bold;
-          font-size: 13px;
+          font-weight: 800;
           margin-top: 1px;
         }
 
-        .check {
-          color: #2f855a;
-          background: rgba(47, 133, 90, 0.12);
+        .go .marker {
+          color: #68d391;
         }
 
-        .cross {
-          color: #c53030;
-          background: rgba(197, 48, 48, 0.12);
+        .stop .marker {
+          color: #fc8181;
+        }
+
+        .vs-badge {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 74px;
+          height: 74px;
+          border-radius: 50%;
+          background: #ffffff;
+          color: #1a472a;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 800;
+          font-size: 0.8rem;
+          text-align: center;
+          line-height: 1.2;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+          border: 3px solid #f7f8f7;
+          z-index: 2;
         }
 
         .see-more {
@@ -241,28 +225,17 @@ export default function EligibilitySection() {
           white-space: nowrap;
         }
 
-        .see-more-arrow {
-          flex-shrink: 0;
-          font-size: 1.2rem;
-          color: #ffffff;
-          transition: transform 0.3s ease;
-        }
-
-        :global(.see-more-card:hover) .see-more-arrow {
-          transform: translateX(6px);
-        }
-
-        @media(max-width:768px){
-
-          .cards {
-            flex-direction: column;
-            align-items: center;
+        @media (max-width: 820px) {
+          .split {
+            grid-template-columns: 1fr;
           }
 
-          .card {
-            width: 100%;
-            max-width: 420px;
+          .vs-badge {
+            display: none;
           }
+        }
+
+        @media (max-width: 768px) {
 
           .section-title {
             font-size: 28px;
@@ -270,6 +243,10 @@ export default function EligibilitySection() {
 
           .section-subtitle {
             font-size: 16px;
+          }
+
+          .split-side {
+            padding: 2.5rem 1.75rem;
           }
 
         }

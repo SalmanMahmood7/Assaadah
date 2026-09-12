@@ -272,7 +272,7 @@ export default function CareersPage() {
             <h3>Ready to contribute to something lasting?</h3>
             <p>Send us your resume and relevant work to begin the evaluation process.</p>
             <a href="mailto:careers@assaadah.org" className="cta-button">
-              Apply Now →
+              Apply Now
             </a>
           </div>
         </div>
