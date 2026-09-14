@@ -57,7 +57,7 @@ export default function Education() {
       <section className="hero">
         <div className="hero-image">
           {heroImages.map((image, index) => (
-            <div data-aos="fade-up" data-aos-delay={Math.min(index * 80, 400)}
+            <div
               className={`hero-slide ${index === currentSlide ? "active" : ""}`}
               key={image.src}
             >
@@ -72,44 +72,39 @@ export default function Education() {
               />
             </div>
           ))}
+        </div>
 
-          <div className="hero-overlay">
-            <div className="container">
-              <div className="hero-content">
-                {/* NEW MAIN TITLE */}
-                <h1>Religious Empowerment Program</h1>
+        <div className="hero-scrim" />
 
-                {/* Previous title as simple text */}
-                <p className="hero-subtitle">
-                  From Knowledge to Capability
-                </p>
+        <div className="hero-overlay">
+          <div className="hero-content" data-aos="fade-right">
+            <span className="hero-eyebrow">As-Sa&apos;adah Initiative</span>
 
-                <p className="hero-description">
-                  A structured, performance-driven path for Madaris graduates.
-                </p>
+            <h1>Religious Empowerment Program</h1>
 
-                <div className="hero-buttons">
-                  <button
-                    className="primary-btn"
-                    onClick={() => setIsApplyGateOpen(true)}
-                  >
-                    Apply Now
-                  </button>
+            <p className="hero-subtitle">From Knowledge to Capability</p>
 
-                  <button
-                    className="secondary-btn"
-                    onClick={scrollToStructure}
-                  >
-                    Explore Structure
-                  </button>
-                </div>
+            <p className="hero-description">
+              A structured, performance-driven path for Madaris graduates.
+            </p>
 
-                <p className="hero-footer-note">
-                  An initiative of As-Sa&apos;adah <br />
-                  Implemented by Preprenuership Pvt Ltd
-                </p>
-              </div>
+            <div className="hero-buttons">
+              <button
+                className="primary-btn"
+                onClick={() => setIsApplyGateOpen(true)}
+              >
+                Apply Now
+              </button>
+
+              <button className="secondary-btn" onClick={scrollToStructure}>
+                Explore Structure
+              </button>
             </div>
+
+            <p className="hero-footer-note">
+              An initiative of As-Sa&apos;adah <br />
+              Implemented by Preprenuership Pvt Ltd
+            </p>
           </div>
         </div>
       </section>
@@ -119,126 +114,172 @@ export default function Education() {
           position: relative;
           width: 100%;
           height: 100vh;
-          min-height: 620px;
+          min-height: 640px;
           overflow: hidden;
         }
 
         .hero-image {
-          position: relative;
-          width: 100%;
-          height: 100%;
+          position: absolute;
+          inset: 0;
         }
 
         .hero-slide {
           position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
+          inset: 0;
           opacity: 0;
-          transition: opacity 1.25s ease-in-out;
+          transform: scale(1.06);
+          transition: opacity 1.6s ease-in-out, transform 8s ease-out;
         }
 
         .hero-slide.active {
           opacity: 1;
+          transform: scale(1);
+        }
+
+        .hero-scrim {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            115deg,
+            rgba(19, 74, 46, 0.97) 0%,
+            rgba(20, 82, 50, 0.93) 20%,
+            rgba(22, 90, 55, 0.72) 36%,
+            rgba(24, 100, 60, 0.32) 52%,
+            rgba(24, 100, 60, 0) 68%
+          );
         }
 
         .hero-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
+          position: relative;
+          z-index: 2;
           height: 100%;
           display: flex;
           align-items: center;
-        }
-
-        .container {
-          max-width: 1100px;
-          margin: 0 auto;
-          padding: 0 20px;
-          width: 100%;
+          padding: 0 6vw;
         }
 
         .hero-content {
-          text-align: center;
-          color: #1a472a;
-          max-width: 700px;
-          background: rgba(255, 255, 255, 0.35);
-          backdrop-filter: blur(15px);
-          padding: 3rem;
-          border-radius: 25px;
-          margin: 0 auto;
+          text-align: left;
+          color: #ffffff;
+          max-width: 620px;
+        }
+
+        .hero-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: #d7ecdd;
+          margin-bottom: 1.25rem;
+        }
+
+        .hero-eyebrow::before {
+          content: "";
+          width: 32px;
+          height: 2px;
+          background: #ffffff;
+          opacity: 0.7;
         }
 
         .hero-content h1 {
-  font-size: clamp(2rem, 4.5vw, 2.8rem); /* slightly smaller max for better 2-line fit */
-  font-weight: 800;
-  line-height: 1.25; /* slightly more spacing for readability */
-  margin-bottom: 1rem;
-  font-family: 'Montserrat', sans-serif;
-  max-width: 900px; /* limits width so it wraps cleanly into 2 lines */
-  margin-left: auto;
-  margin-right: auto; /* centers the title */
-  text-align: center; /* ensure center alignment */
-}
+          font-size: clamp(2.1rem, 4vw, 3.1rem);
+          font-weight: 800;
+          line-height: 1.2;
+          margin-bottom: 1rem;
+          font-family: "Montserrat", sans-serif;
+          text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+        }
 
         .hero-subtitle {
-          font-size: 1.2rem;
+          font-size: 1.25rem;
           font-weight: 600;
           margin-bottom: 1rem;
+          color: #eef7f0;
         }
 
         .hero-description {
           font-size: 1.1rem;
-          margin-bottom: 2rem;
+          margin-bottom: 2.25rem;
           line-height: 1.6;
+          color: #dcece0;
+          max-width: 480px;
         }
 
         .hero-buttons {
           display: flex;
           gap: 1rem;
-          justify-content: center;
+          justify-content: flex-start;
           flex-wrap: wrap;
-          margin-bottom: 2rem;
+          margin-bottom: 2.25rem;
         }
 
         .primary-btn {
-          background: #1a472a;
-          color: white;
+          background: #ffffff;
+          color: #123420;
           border: none;
-          padding: 1rem 2rem;
+          padding: 1rem 2.2rem;
           border-radius: 30px;
           cursor: pointer;
-          font-weight: 600;
+          font-weight: 700;
+          box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
         .secondary-btn {
-          background: transparent;
-          border: 2px solid #1a472a;
-          color: #1a472a;
-          padding: 1rem 2rem;
+          background: rgba(255, 255, 255, 0.08);
+          border: 2px solid rgba(255, 255, 255, 0.7);
+          color: #ffffff;
+          padding: 1rem 2.2rem;
           border-radius: 30px;
           cursor: pointer;
           font-weight: 600;
+          backdrop-filter: blur(6px);
+          transition: transform 0.25s ease, background 0.25s ease;
         }
 
-        .secondary-btn:hover,
         .primary-btn:hover {
           transform: translateY(-3px);
+          box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.55);
+        }
+
+        .secondary-btn:hover {
+          transform: translateY(-3px);
+          background: rgba(255, 255, 255, 0.16);
         }
 
         .hero-footer-note {
           font-size: 0.85rem;
-          opacity: 0.8;
+          opacity: 0.85;
           line-height: 1.5;
+          padding-top: 1.25rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.2);
+          max-width: 380px;
         }
 
-        @media (max-width: 768px) {
-          .hero-content {
-            padding: 2rem 1.5rem;
+        @media (max-width: 900px) {
+          .hero-scrim {
+            background: linear-gradient(
+              180deg,
+              rgba(20, 82, 50, 0.55) 0%,
+              rgba(19, 74, 46, 0.82) 55%,
+              rgba(19, 74, 46, 0.97) 100%
+            );
           }
 
+          .hero-overlay {
+            align-items: flex-end;
+            padding: 0 6vw 3.5rem;
+          }
+
+          .hero-content {
+            max-width: 100%;
+          }
+        }
+
+        @media (max-width: 480px) {
           .hero-buttons {
             flex-direction: column;
           }
@@ -246,6 +287,7 @@ export default function Education() {
           .primary-btn,
           .secondary-btn {
             width: 100%;
+            text-align: center;
           }
         }
       `}</style>
