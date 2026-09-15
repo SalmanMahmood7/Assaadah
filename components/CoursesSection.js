@@ -35,6 +35,8 @@ const FALLBACK_COURSES = [
 
 export default function CoursesSection() {
   const [courses, setCourses] = useState(FALLBACK_COURSES);
+  const [viewportWidth, setViewportWidth] = useState(1200);
+  const [activeCard, setActiveCard] = useState(null);
 
   useEffect(() => {
     supabase
@@ -47,9 +49,20 @@ export default function CoursesSection() {
       });
   }, []);
 
+  useEffect(() => {
+    const onResize = () => setViewportWidth(window.innerWidth);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   // duplicated once so the CSS loop animation is seamless
   const loopCourses = [...courses, ...courses];
-  const itemWidthVw = 100 / courses.length;
+
+  // set inline, so it must already reflect the breakpoint here rather than in a
+  // stylesheet media query (an inline style always wins over any CSS rule)
+  const itemWidthVw =
+    viewportWidth <= 480 ? 88 : viewportWidth <= 768 ? 78 : 100 / courses.length;
 
   return (
     <section className="courses-section">
@@ -58,11 +71,14 @@ export default function CoursesSection() {
         <h2>Our Courses</h2>
       </div>
 
-      <div className="owl-carousel courses-carousel">
+      <div className="owl-carousel courses-carousel" style={{ "--item-width": `${itemWidthVw}vw` }}>
         <div className="owl-stage">
           {loopCourses.map((course, index) => (
             <div className="owl-item" key={`${course.id || course.title}-${index}`}>
-              <div className="courses-item position-relative">
+              <div
+                className="courses-item position-relative"
+                onClick={() => setActiveCard((prev) => (prev === index ? null : index))}
+              >
                 <img className="img-fluid" src={course.image} alt={course.title} />
                 <div className="courses-text">
                   <h4 className="text-center text-white px-3">{course.title}</h4>
@@ -74,7 +90,7 @@ export default function CoursesSection() {
                     </div>
                   </div>
 
-                  <div className="courses-detail">
+                  <div className={`courses-detail ${activeCard === index ? "is-active" : ""}`}>
                     <div className="w-100 bg-white text-center p-4">
                       <Link href={course.path} className="btn btn-primary">
                         Course Detail
@@ -153,7 +169,7 @@ export default function CoursesSection() {
         }
 
         .owl-item {
-          flex: 0 0 ${itemWidthVw}vw;
+          flex: 0 0 var(--item-width);
         }
 
         .courses-item {
@@ -192,7 +208,8 @@ export default function CoursesSection() {
           transition: max-height 0.35s ease, opacity 0.35s ease;
         }
 
-        .courses-item:hover .courses-detail {
+        .courses-item:hover .courses-detail,
+        .courses-detail.is-active {
           max-height: 100px;
           opacity: 1;
         }

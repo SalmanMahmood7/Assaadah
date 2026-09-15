@@ -138,13 +138,13 @@ export default function FeeScholarshipSection() {
         .fee-header {
           max-width: 1200px;
           margin: 0 auto 2.5rem;
-          text-align: left;
+          text-align: center;
         }
 
         .fee-header h2 {
-          font-size: clamp(1.9rem, 3.2vw, 2.4rem);
+          font-size: 2.4rem;
           font-weight: 800;
-          color: #14532d;
+          color: #1a472a;
           margin: 0 0 0.6rem;
           font-family: 'Montserrat', sans-serif;
         }
@@ -153,7 +153,7 @@ export default function FeeScholarshipSection() {
           color: #4a5568;
           font-size: 1.02rem;
           max-width: 620px;
-          margin: 0;
+          margin: 0 auto;
           line-height: 1.6;
         }
 
@@ -360,6 +360,10 @@ export default function FeeScholarshipSection() {
         }
 
         @media (max-width: 900px) {
+          .fee-header h2 {
+            font-size: 1.9rem;
+          }
+
           .fee-cards {
             grid-template-columns: 1fr;
           }

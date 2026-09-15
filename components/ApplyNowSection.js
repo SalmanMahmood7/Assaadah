@@ -147,13 +147,16 @@ export default function ApplyNowSection() {
           text-transform: uppercase;
           letter-spacing: 2px;
           margin: 0 0 0.75rem;
+          text-align: center;
         }
 
         .section-title {
-          font-size: 36px;
-          font-weight: 700;
+          font-size: 2.4rem;
+          font-weight: 800;
           color: #1a472a;
           margin-bottom: 15px;
+          font-family: 'Montserrat', sans-serif;
+          text-align: center;
         }
 
         .section-subtitle {
@@ -346,6 +349,10 @@ export default function ApplyNowSection() {
 
         /* Mobile */
         @media(max-width:900px){
+          .section-title {
+            font-size: 1.9rem;
+          }
+
           .apply-inner {
             grid-template-columns: 1fr;
             gap: 50px;

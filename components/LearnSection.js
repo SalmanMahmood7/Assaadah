@@ -173,10 +173,12 @@ export default function LearnSection() {
           background: #ffffff;
         }
         .section-title {
-          font-size: 32px;
-          font-weight: 700;
+          font-size: 2.4rem;
+          font-weight: 800;
           color: #1a472a;
           margin: 0 0 10px;
+          font-family: 'Montserrat', sans-serif;
+          text-align: center;
         }
         .section-sub {
           font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
@@ -337,6 +339,10 @@ export default function LearnSection() {
         }
 
         @media (max-width: 900px) {
+          .section-title {
+            font-size: 1.9rem;
+          }
+
           .mm-branches {
             flex-wrap: wrap;
             justify-content: center;

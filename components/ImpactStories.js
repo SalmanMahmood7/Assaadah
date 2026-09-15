@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import supabase from '../lib/supabaseClient';
 
@@ -107,6 +107,10 @@ export default function ImpactStories() {
   };
 
   const totalSlides = impactStories.length;
+  const slideRefs = useRef([]);
+  const containerRef = useRef(null);
+  const resumeAutoplayTimeout = useRef(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     if (!isAutoPlaying) return;
@@ -117,6 +121,25 @@ export default function ImpactStories() {
 
     return () => clearInterval(interval);
   }, [isAutoPlaying, totalSlides]);
+
+  // on mobile the wrapper uses native scroll-snap instead of the transform above,
+  // so keep the pagination bullets/autoplay in sync by scrolling the active slide
+  // horizontally within its own container only. Note: Element.scrollIntoView()
+  // must NOT be used here — it also scrolls the page's vertical scroll position
+  // to bring the element into view, which yanked the whole page down to this
+  // section every time autoplay advanced, regardless of where the user was reading.
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (typeof window === 'undefined' || window.innerWidth > 768) return;
+    const container = containerRef.current;
+    const slide = slideRefs.current[currentSlide];
+    if (!container || !slide) return;
+    const target = slide.offsetLeft - (container.clientWidth - slide.clientWidth) / 2;
+    container.scrollTo({ left: target, behavior: 'smooth' });
+  }, [currentSlide]);
 
   const goToSlide = (index) => {
     setCurrentSlide(index);
@@ -130,6 +153,15 @@ export default function ImpactStories() {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+  };
+
+  const handleTouchStart = () => {
+    window.clearTimeout(resumeAutoplayTimeout.current);
+    setIsAutoPlaying(false);
+  };
+
+  const handleTouchEnd = () => {
+    resumeAutoplayTimeout.current = window.setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
   return (
@@ -146,7 +178,7 @@ export default function ImpactStories() {
           {/* Pagination Bullets */}
           <div className="slider-pagination">
             {impactStories.map((_, index) => (
-              <button data-aos="fade-up" data-aos-delay={Math.min(index * 80, 400)}
+              <button
                 key={index}
                 className={`pagination-bullet ${currentSlide === index ? 'active' : ''}`}
                 onClick={() => goToSlide(index)}
@@ -156,14 +188,27 @@ export default function ImpactStories() {
           </div>
 
           {/* Slides Container */}
-          <div className="testimonial-container">
-            <div 
+          <div
+            className="testimonial-container"
+            ref={containerRef}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div
               className="testimonial-wrapper"
               style={{ transform: `translateX(-${currentSlide * 400}px)` }}
             >
               {/* Duplicate slides for infinite loop effect */}
               {[...impactStories, ...impactStories, ...impactStories].map((story, index) => (
-                <div data-aos="fade-up" data-aos-delay={Math.min(index * 80, 400)} key={index} className="testimonial-slide">
+                <div
+                  data-aos="fade-up"
+                  data-aos-delay={Math.min(index * 80, 400)}
+                  key={index}
+                  ref={(node) => {
+                    if (index < totalSlides) slideRefs.current[index] = node;
+                  }}
+                  className="testimonial-slide"
+                >
                   <div className="testimonial-inner">
                     <div className="testimonial-content">
                       <p>
@@ -367,8 +412,8 @@ export default function ImpactStories() {
         }
 
         .section-title {
-          font-size: 2.5rem;
-          font-weight: 700;
+          font-size: 2.4rem;
+          font-weight: 800;
           color: #1a472a;
           margin-bottom: 1rem;
           font-family: 'Montserrat', sans-serif;
@@ -403,12 +448,10 @@ export default function ImpactStories() {
           border: none;
           background: #d1d5db;
           cursor: pointer;
-          transition: all 0.3s ease;
         }
 
         .pagination-bullet.active {
           background: #1a472a;
-          transform: scale(1.2);
         }
 
         .testimonial-container {
@@ -563,12 +606,7 @@ export default function ImpactStories() {
           }
 
           .section-title {
-            font-size: 2rem;
-          }
-
-          .testimonial-slide {
-            min-width: 320px;
-            margin-right: 20px;
+            font-size: 1.9rem;
           }
 
           .testimonial-inner {
@@ -578,17 +616,32 @@ export default function ImpactStories() {
           .testimonial-container {
             height: auto;
             min-height: 350px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            margin: 0 -20px;
+            padding: 0 20px;
+          }
+
+          .testimonial-container::-webkit-scrollbar {
+            display: none;
           }
 
           .testimonial-wrapper {
             transform: none !important;
-            flex-direction: column;
-            gap: 2rem;
+            flex-direction: row;
+            gap: 0;
+            width: max-content;
           }
 
           .testimonial-slide {
-            min-width: 100%;
-            margin-right: 0;
+            min-width: 82vw;
+            max-width: 82vw;
+            margin-right: 16px;
+            height: auto;
+            scroll-snap-align: center;
           }
 
           .slider-pagination {

@@ -154,9 +154,10 @@ export default function FounderMessage() {
           margin-bottom: 1.5rem;
         }
         .section-title {
-          font-size: 3rem;
+          font-size: 2.4rem;
           font-weight: 800;
           margin-bottom: 1.5rem;
+          font-family: 'Montserrat', sans-serif;
         }
         .arabic-text .bismillah {
           font-size: 2.2rem;
@@ -266,6 +267,10 @@ export default function FounderMessage() {
         }
 
         @media (max-width: 768px) {
+          .section-title {
+            font-size: 1.9rem;
+          }
+
           .leader-row, .leader-row.reverse {
             flex-direction: column;
             text-align: center;

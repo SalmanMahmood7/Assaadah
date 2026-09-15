@@ -116,7 +116,7 @@ export function SelectionPhilosophySection() {
         }
 
         .section-title h1 {
-          font-size: 32px;
+          font-size: 2.4rem;
           color: #1a472a;
           margin: 0;
           font-weight: 800;
@@ -281,6 +281,10 @@ export function SelectionPhilosophySection() {
         }
 
         @media (max-width: 1000px) {
+          .section-title h1 {
+            font-size: 1.9rem;
+          }
+
           .row {
             grid-template-columns: 1fr 1fr;
           }

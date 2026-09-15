@@ -110,7 +110,7 @@ export default function About() {
             {/* Slide Indicators */}
             <div className={`slide-indicators ${isMounted && isVisible ? 'fade-in' : ''}`}>
               {slides.map((_, index) => (
-                <button data-aos="fade-up" data-aos-delay={Math.min(index * 80, 400)}
+                <button
                   key={index}
                   className={`slide-dot ${currentSlide === index ? 'active' : ''}`}
                   onClick={() => setCurrentSlide(index)}
@@ -239,15 +239,17 @@ export default function About() {
           letter-spacing: 1.5px;
           margin-bottom: 0.8rem;
           font-family: 'Montserrat', sans-serif;
+          text-align: center;
         }
 
         .about-section-title {
           color: #1a472a;
-          font-size: 1.9rem;
+          font-size: 2.4rem;
           font-weight: 800;
           margin-bottom: 1rem;
           font-family: 'Montserrat', sans-serif;
           line-height: 1.2;
+          text-align: center;
         }
 
         .about-section-description {
@@ -302,12 +304,10 @@ export default function About() {
           border: none;
           background: rgba(26, 71, 42, 0.3);
           cursor: pointer;
-          transition: all 0.3s ease;
         }
 
         .slide-dot.active {
           background: #1a472a;
-          transform: scale(1.2);
         }
 
         .slide-dot:hover {
@@ -359,7 +359,7 @@ export default function About() {
           }
 
           .about-section-title {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
           }
 
           .about-section-description p {

@@ -85,10 +85,11 @@ export default function EligibilitySection() {
         }
 
         .section-title {
-          font-size: 36px;
+          font-size: 2.4rem;
           color: #1a472a;
           margin-bottom: 10px;
-          font-weight: 700;
+          font-weight: 800;
+          font-family: 'Montserrat', sans-serif;
         }
 
         .section-subtitle {
@@ -238,7 +239,7 @@ export default function EligibilitySection() {
         @media (max-width: 768px) {
 
           .section-title {
-            font-size: 28px;
+            font-size: 1.9rem;
           }
 
           .section-subtitle {
